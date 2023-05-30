@@ -2,9 +2,15 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/okhttp-utils.iml" filepath="$PROJECT_DIR$/okhttp-utils.iml" />
-      <module fileurl="file://$PROJECT_DIR$/okhttputils/okhttputils.iml" filepath="$PROJECT_DIR$/okhttputils/okhttputils.iml" />
-      <module fileurl="file://$PROJECT_DIR$/sample-okhttp/sample-okhttp.iml" filepath="$PROJECT_DIR$/sample-okhttp/sample-okhttp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/StudioProjects.okhttputils.iml" filepath="$PROJECT_DIR$/.idea/modules/StudioProjects.okhttputils.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/okhttputils/okhttputils.okhttputils.iml" filepath="$PROJECT_DIR$/.idea/modules/okhttputils/okhttputils.okhttputils.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/okhttputils/okhttputils.okhttputils.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/okhttputils/okhttputils.okhttputils.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/okhttputils/okhttputils.okhttputils.main.iml" filepath="$PROJECT_DIR$/.idea/modules/okhttputils/okhttputils.okhttputils.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/okhttputils/okhttputils.okhttputils.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/okhttputils/okhttputils.okhttputils.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sample-okhttp/okhttputils.sample-okhttp.iml" filepath="$PROJECT_DIR$/.idea/modules/sample-okhttp/okhttputils.sample-okhttp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sample-okhttp/okhttputils.sample-okhttp.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/sample-okhttp/okhttputils.sample-okhttp.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sample-okhttp/okhttputils.sample-okhttp.main.iml" filepath="$PROJECT_DIR$/.idea/modules/sample-okhttp/okhttputils.sample-okhttp.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sample-okhttp/okhttputils.sample-okhttp.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/sample-okhttp/okhttputils.sample-okhttp.unitTest.iml" />
     </modules>
   </component>
 </project>
