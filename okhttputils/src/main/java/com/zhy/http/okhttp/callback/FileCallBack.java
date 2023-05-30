@@ -12,6 +12,7 @@ import okhttp3.Response;
 /**
  * Created by zhy on 15/12/15.
  */
+@SuppressWarnings("ALL")
 public abstract class FileCallBack extends Callback<File>
 {
     /**
@@ -63,15 +64,7 @@ public abstract class FileCallBack extends Callback<File>
                 sum += len;
                 fos.write(buf, 0, len);
                 final long finalSum = sum;
-                OkHttpUtils.getInstance().getDelivery().execute(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-
-                        inProgress(finalSum * 1.0f / total,total,id);
-                    }
-                });
+                OkHttpUtils.getInstance().getDelivery().execute(() -> inProgress(finalSum * 1.0f / total,total,id));
             }
             fos.flush();
 
@@ -83,13 +76,13 @@ public abstract class FileCallBack extends Callback<File>
             {
                 response.body().close();
                 if (is != null) is.close();
-            } catch (IOException e)
+            } catch (IOException ignored)
             {
             }
             try
             {
                 if (fos != null) fos.close();
-            } catch (IOException e)
+            } catch (IOException ignored)
             {
             }
 

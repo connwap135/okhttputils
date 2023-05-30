@@ -17,6 +17,7 @@ import okio.Buffer;
 /**
  * Created by zhy on 16/3/1.
  */
+@SuppressWarnings("ALL")
 public class LoggerInterceptor implements Interceptor
 {
     public static final String TAG = "OkHttpUtils";
@@ -69,13 +70,13 @@ public class LoggerInterceptor implements Interceptor
                     MediaType mediaType = body.contentType();
                     if (mediaType != null)
                     {
-                        Log.e(tag, "responseBody's contentType : " + mediaType.toString());
+                        Log.e(tag, "responseBody's contentType : " + mediaType);
                         if (isText(mediaType))
                         {
                             String resp = body.string();
                             Log.e(tag, "responseBody's content : " + resp);
 
-                            body = ResponseBody.create(mediaType, resp);
+                            body = ResponseBody.create(resp,mediaType);
                             return response.newBuilder().body(body).build();
                         } else
                         {
@@ -106,7 +107,7 @@ public class LoggerInterceptor implements Interceptor
             Log.e(tag, "url : " + url);
             if (headers != null && headers.size() > 0)
             {
-                Log.e(tag, "headers : " + headers.toString());
+                Log.e(tag, "headers : " + headers);
             }
             RequestBody requestBody = request.body();
             if (requestBody != null)
@@ -114,7 +115,7 @@ public class LoggerInterceptor implements Interceptor
                 MediaType mediaType = requestBody.contentType();
                 if (mediaType != null)
                 {
-                    Log.e(tag, "requestBody's contentType : " + mediaType.toString());
+                    Log.e(tag, "requestBody's contentType : " + mediaType);
                     if (isText(mediaType))
                     {
                         Log.e(tag, "requestBody's content : " + bodyToString(request));
@@ -139,12 +140,10 @@ public class LoggerInterceptor implements Interceptor
         }
         if (mediaType.subtype() != null)
         {
-            if (mediaType.subtype().equals("json") ||
+            return mediaType.subtype().equals("json") ||
                     mediaType.subtype().equals("xml") ||
                     mediaType.subtype().equals("html") ||
-                    mediaType.subtype().equals("webviewhtml")
-                    )
-                return true;
+                    mediaType.subtype().equals("webviewhtml");
         }
         return false;
     }

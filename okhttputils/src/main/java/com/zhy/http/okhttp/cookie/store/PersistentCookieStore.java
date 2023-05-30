@@ -31,7 +31,7 @@ import okhttp3.HttpUrl;
  *
  * </pre>
  * <p/>
- * from http://stackoverflow.com/questions/25461792/persistent-cookie-store-using-okhttp-2-on-android
+ * from <a href="http://stackoverflow.com/questions/25461792/persistent-cookie-store-using-okhttp-2-on-android">...</a>
  * <p/>
  * <br/>
  * A persistent cookie store which implements the Apache HttpClient CookieStore interface.
@@ -40,6 +40,7 @@ import okhttp3.HttpUrl;
  * designed to be used with AsyncHttpClient#setCookieStore, but can also be used with a
  * regular old apache HttpClient/HttpContext if you prefer.
  */
+@SuppressWarnings("ALL")
 public class PersistentCookieStore implements CookieStore
 {
 
@@ -58,13 +59,13 @@ public class PersistentCookieStore implements CookieStore
     public PersistentCookieStore(Context context)
     {
         cookiePrefs = context.getSharedPreferences(COOKIE_PREFS, 0);
-        cookies = new HashMap<String, ConcurrentHashMap<String, Cookie>>();
+        cookies = new HashMap<>();
 
         // Load any previously stored cookies into the store
         Map<String, ?> prefsMap = cookiePrefs.getAll();
         for (Map.Entry<String, ?> entry : prefsMap.entrySet())
         {
-            if (((String) entry.getValue()) != null && !((String) entry.getValue()).startsWith(COOKIE_NAME_PREFIX))
+            if (entry.getValue() != null && !((String) entry.getValue()).startsWith(COOKIE_NAME_PREFIX))
             {
                 String[] cookieNames = TextUtils.split((String) entry.getValue(), ",");
                 for (String name : cookieNames)
@@ -76,7 +77,7 @@ public class PersistentCookieStore implements CookieStore
                         if (decodedCookie != null)
                         {
                             if (!cookies.containsKey(entry.getKey()))
-                                cookies.put(entry.getKey(), new ConcurrentHashMap<String, Cookie>());
+                                cookies.put(entry.getKey(), new ConcurrentHashMap<>());
                             cookies.get(entry.getKey()).put(name, decodedCookie);
                         }
                     }
@@ -94,7 +95,7 @@ public class PersistentCookieStore implements CookieStore
         {
             if (!cookies.containsKey(uri.host()))
             {
-                cookies.put(uri.host(), new ConcurrentHashMap<String, Cookie>());
+                cookies.put(uri.host(), new ConcurrentHashMap<>());
             }
             cookies.get(uri.host()).put(name, cookie);
         } else
@@ -132,7 +133,7 @@ public class PersistentCookieStore implements CookieStore
     @Override
     public List<Cookie> get(HttpUrl uri)
     {
-        ArrayList<Cookie> ret = new ArrayList<Cookie>();
+        ArrayList<Cookie> ret = new ArrayList<>();
         if (cookies.containsKey(uri.host()))
         {
             Collection<Cookie> cookies = this.cookies.get(uri.host()).values();
@@ -194,7 +195,7 @@ public class PersistentCookieStore implements CookieStore
     @Override
     public List<Cookie> getCookies()
     {
-        ArrayList<Cookie> ret = new ArrayList<Cookie>();
+        ArrayList<Cookie> ret = new ArrayList<>();
         for (String key : cookies.keySet())
             ret.addAll(cookies.get(key).values());
 
@@ -263,7 +264,7 @@ public class PersistentCookieStore implements CookieStore
     }
 
     /**
-     * Converts hex values from strings to byte arra
+     * Converts hex values from strings to byte array
      *
      * @param hexString string of hex-encoded values
      * @return decoded byte array

@@ -12,6 +12,7 @@ import okhttp3.RequestBody;
 /**
  * Created by zhy on 15/11/6.
  */
+@SuppressWarnings("ALL")
 public abstract class OkHttpRequest
 {
     protected String url;

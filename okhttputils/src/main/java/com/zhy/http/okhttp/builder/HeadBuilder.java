@@ -7,6 +7,7 @@ import com.zhy.http.okhttp.request.RequestCall;
 /**
  * Created by zhy on 16/3/2.
  */
+@SuppressWarnings("ALL")
 public class HeadBuilder extends GetBuilder
 {
     @Override

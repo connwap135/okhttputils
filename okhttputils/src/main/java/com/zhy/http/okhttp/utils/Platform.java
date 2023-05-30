@@ -21,7 +21,7 @@ import android.os.Looper;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-
+@SuppressWarnings("ALL")
 public class Platform
 {
     private static final Platform PLATFORM = findPlatform();

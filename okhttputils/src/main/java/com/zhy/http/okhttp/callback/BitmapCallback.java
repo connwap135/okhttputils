@@ -8,6 +8,7 @@ import okhttp3.Response;
 /**
  * Created by zhy on 15/12/14.
  */
+@SuppressWarnings("ALL")
 public abstract class BitmapCallback extends Callback<Bitmap>
 {
     @Override

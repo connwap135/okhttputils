@@ -24,6 +24,7 @@ import javax.net.ssl.X509TrustManager;
 /**
  * Created by zhy on 15/12/14.
  */
+@SuppressWarnings("ALL")
 public class HttpsUtils
 {
     public static class SSLParams

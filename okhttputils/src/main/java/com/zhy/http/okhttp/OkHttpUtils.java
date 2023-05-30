@@ -20,6 +20,7 @@ import okhttp3.Response;
 /**
  * Created by zhy on 15/8/17.
  */
+@SuppressWarnings({"unused", "rawtypes", "unchecked", "NullableProblems", "FieldMayBeFinal"})
 public class OkHttpUtils
 {
     public static final long DEFAULT_MILLISECONDS = 10_000L;
@@ -140,7 +141,7 @@ public class OkHttpUtils
 
                     if (!finalCallback.validateReponse(response, id))
                     {
-                        sendFailResultCallback(call, new IOException("request failed , reponse's code is : " + response.code()), finalCallback, id);
+                        sendFailResultCallback(call, new IOException("request failed , response's code is : " + response.code()), finalCallback, id);
                         return;
                     }
 
@@ -164,28 +165,18 @@ public class OkHttpUtils
     {
         if (callback == null) return;
 
-        mPlatform.execute(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                callback.onError(call, e, id);
-                callback.onAfter(id);
-            }
+        mPlatform.execute(() -> {
+            callback.onError(call, e, id);
+            callback.onAfter(id);
         });
     }
 
     public void sendSuccessResultCallback(final Object object, final Callback callback, final int id)
     {
         if (callback == null) return;
-        mPlatform.execute(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                callback.onResponse(object, id);
-                callback.onAfter(id);
-            }
+        mPlatform.execute(() -> {
+            callback.onResponse(object, id);
+            callback.onAfter(id);
         });
     }
 

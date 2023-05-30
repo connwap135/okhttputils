@@ -8,6 +8,7 @@ import okhttp3.RequestBody;
 /**
  * DELETE、PUT、PATCH等其他方法
  */
+@SuppressWarnings("ALL")
 public class OtherRequestBuilder extends OkHttpRequestBuilder<OtherRequestBuilder>
 {
     private RequestBody requestBody;

@@ -18,6 +18,7 @@ import okio.Sink;
  *
  * @author Leo Nikkilä
  */
+@SuppressWarnings("ALL")
 public class CountingRequestBody extends RequestBody
 {
 
