@@ -65,9 +65,9 @@
 -keep public class * extends android.content.ContentProvider
 -keep public class * extends android.app.backup.BackupAgentHelper
 -keep public class * extends android.preference.Preference
--keep public class com.android.vending.licensing.ILicensingService
+#-keep public class com.android.vending.licensing.ILicensingService
 #如果有引用v4包可以添加下面这行
--keep public class * extends android.support.v4.app.Fragment
+#-keep public class * extends android.support.v4.app.Fragment
 #自定义View
 -keep public class * extends android.view.View
 # V4,V7
