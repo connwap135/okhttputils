@@ -12,9 +12,6 @@ import com.zhy.http.okhttp.log.LoggerInterceptor;
 
 import java.util.concurrent.TimeUnit;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLSession;
-
 import okhttp3.OkHttpClient;
 
 /**
@@ -53,14 +50,7 @@ public class MyApplication extends Application
                 .readTimeout(10000L, TimeUnit.MILLISECONDS)
                 .addInterceptor(new LoggerInterceptor("TAG"))
                 .cookieJar(cookieJar1)
-                .hostnameVerifier(new HostnameVerifier()
-                {
-                    @Override
-                    public boolean verify(String hostname, SSLSession session)
-                    {
-                        return true;
-                    }
-                })
+                .hostnameVerifier((hostname, session) -> true)
                 .sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
                 .build();
         OkHttpUtils.initClient(okHttpClient);

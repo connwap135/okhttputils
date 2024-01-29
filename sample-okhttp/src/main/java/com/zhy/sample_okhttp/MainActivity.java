@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatActivity
 
     public void getUsers(View view)
     {
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put("name", "zhy");
         String url = mBaseUrl + "user!getUsers";
         OkHttpUtils//
