@@ -1,11 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdk 33
+    compileSdk 34
     defaultConfig {
         applicationId "com.zhy.sample_okhttp"
-        minSdkVersion 21
-        setTargetSdk 33
+        minSdk 28
         versionCode 1
         versionName "1.0"
     }
@@ -29,7 +28,7 @@ dependencies {
     implementation project(':okhttputils')
 //    compile 'com.zhy:okhttputils:2.6.1'
     implementation 'com.google.code.gson:gson:2.10.1'
-    implementation 'com.squareup.okhttp3:okhttp-urlconnection:4.10.0'
+    implementation 'com.squareup.okhttp3:okhttp-urlconnection:4.12.0'
     implementation 'com.github.franmontiel:PersistentCookieJar:0.9.3'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
