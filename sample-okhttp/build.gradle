@@ -1,11 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdk 33
+    compileSdk 34
     defaultConfig {
         applicationId "com.zhy.sample_okhttp"
-        minSdkVersion 21
-        setTargetSdk 33
+        minSdk 28
         versionCode 1
         versionName "1.0"
     }

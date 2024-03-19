@@ -4,11 +4,10 @@ plugins {
 
 android {
     namespace 'com.zhy.http'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         minSdk 21
-        setTargetSdk 33
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -18,6 +17,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
 }
 
 dependencies {
