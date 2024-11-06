@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace 'com.zhy.http'
-    compileSdk 34
+    compileSdk 32
 
     defaultConfig {
         minSdk 21
