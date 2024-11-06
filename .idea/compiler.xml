@@ -11,6 +11,9 @@
       <entry name="!?*.kt" />
       <entry name="!?*.clj" />
     </wildcardResourcePatterns>
-    <bytecodeTargetLevel target="17" />
+    <bytecodeTargetLevel target="17">
+      <module name="StudioProjects.okhttputils.okhttputils" target="21" />
+      <module name="StudioProjects.okhttputils.sample-okhttp" target="21" />
+    </bytecodeTargetLevel>
   </component>
 </project>
