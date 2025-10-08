@@ -80,8 +80,8 @@ public class FlowLayout extends ViewGroup
 
 	}
 
-	private List<List<View>> mAllViews = new ArrayList<>();
-	private List<Integer> mLineHeight = new ArrayList<>();
+	private final List<List<View>> mAllViews = new ArrayList<>();
+	private final List<Integer> mLineHeight = new ArrayList<>();
 
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b)

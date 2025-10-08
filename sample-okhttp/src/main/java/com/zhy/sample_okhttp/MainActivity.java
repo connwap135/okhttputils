@@ -33,7 +33,7 @@ import okhttp3.Request;
 public class MainActivity extends AppCompatActivity
 {
 
-    private String mBaseUrl = "http://192.168.31.242:8888/okHttpServer/";
+    private final String mBaseUrl = "http://192.168.31.242:8888/okHttpServer/";
 
     private static final String TAG = "MainActivity";
 
@@ -98,9 +98,9 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
 
-        mTv = (TextView) findViewById(R.id.id_textview);
-        mImageView = (ImageView) findViewById(R.id.id_imageview);
-        mProgressBar = (ProgressBar) findViewById(R.id.id_progress);
+        mTv = findViewById(R.id.id_textview);
+        mImageView = findViewById(R.id.id_imageview);
+        mProgressBar = findViewById(R.id.id_progress);
         mProgressBar.setMax(100);
     }
 
