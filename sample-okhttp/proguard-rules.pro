@@ -120,5 +120,48 @@
 
 #okhttp
 -dontwarn okhttp3.**
--keep class okhttp3.**{*;}
--keep interface okhttp3.**{*;}
+# 修改过于宽泛的keep规则，只保留必要的类和接口
+-keep interface okhttp3.** {
+    *;
+}
+
+# 更精确的规则，只保留必要的类和方法
+-keep class okhttp3.OkHttpClient
+-keep class okhttp3.Request
+-keep class okhttp3.Response
+-keep class okhttp3.Call
+-keep class okhttp3.Callback
+-keep class okhttp3.Headers
+-keep class okhttp3.MediaType
+-keep class okhttp3.RequestBody
+-keep class okhttp3.ResponseBody
+
+-keep interface okhttp3.Call
+-keep interface okhttp3.Callback
+-keep interface okhttp3.Interceptor
+
+# 保留常用的内部类和Builder模式
+-keep class okhttp3.Request$Builder
+-keep class okhttp3.Response$Builder
+
+# 保留主要异常类
+-keep class okhttp3.HttpUrl$Builder
+-keep class okhttp3.HttpUrl
+-keep class okhttp3.Protocol
+-keep class okhttp3.ConnectionSpec
+
+# 保留枚举类
+-keep class okhttp3.Credentials
+-keep class okhttp3.Cache
+-keep class okhttp3.Dispatcher
+-keep class okhttp3.FormBody
+-keep class okhttp3.MultipartBody
+
+# 保留方法签名
+-keepclasseswithmembernames class okhttp3.** {
+    public <init>(...);
+}
+
+-keepclassmembers class okhttp3.** {
+    public *;
+}
