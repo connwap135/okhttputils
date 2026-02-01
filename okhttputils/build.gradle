@@ -1,6 +1,10 @@
 plugins {
     id 'com.android.library'
+    id 'maven-publish'
 }
+
+group = 'com.github.connwap135'
+version = '2.6.9'
 
 android {
     namespace 'com.zhy.http'
@@ -17,7 +21,25 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
+    }
+}
 
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId = 'com.github.connwap135'
+                artifactId = 'okhttputils'
+                version = '2.6.9'
+            }
+        }
+    }
 }
 
 dependencies {
