@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'com.github.connwap135'
-version = '2.6.9'
+version = '2.6.10'
 
 android {
     namespace 'com.zhy.http'
@@ -36,7 +36,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.github.connwap135'
                 artifactId = 'okhttputils'
-                version = '2.6.9'
+                version = '2.6.10'
             }
         }
     }
