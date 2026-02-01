@@ -52,8 +52,6 @@
 -keepattributes Exceptions,InnerClasses
 
 -dontwarn org.apache.**
--dontwarn android.support.**
-
 #基础配置
 # 保持哪些类不被混淆
 # 系统组件
@@ -66,15 +64,9 @@
 -keep public class * extends android.app.backup.BackupAgentHelper
 -keep public class * extends android.preference.Preference
 #-keep public class com.android.vending.licensing.ILicensingService
-#如果有引用v4包可以添加下面这行
-#-keep public class * extends android.support.v4.app.Fragment
 #自定义View
 -keep public class * extends android.view.View
-# V4,V7
--keep class android.support.v4.**{ *; }
--keep class android.support.v7.**{ *; }
 -keep class android.webkit.**{*;}
--keep interface android.support.v4.app.** { *; }
 #保持 本化方法及其类声明
 -keepclasseswithmembers class * {
     native <methods>;
