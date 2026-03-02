@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/okhttputils.iml" filepath="$PROJECT_DIR$/.idea/modules/okhttputils.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/okhttputils/okhttputils.okhttputils.iml" filepath="$PROJECT_DIR$/.idea/modules/okhttputils/okhttputils.okhttputils.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/okhttputils/okhttputils.okhttputils.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/okhttputils/okhttputils.okhttputils.androidTest.iml" />
@@ -11,6 +12,9 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/sample-okhttp/okhttputils.sample-okhttp.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/sample-okhttp/okhttputils.sample-okhttp.androidTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/sample-okhttp/okhttputils.sample-okhttp.main.iml" filepath="$PROJECT_DIR$/.idea/modules/sample-okhttp/okhttputils.sample-okhttp.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/sample-okhttp/okhttputils.sample-okhttp.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/sample-okhttp/okhttputils.sample-okhttp.unitTest.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/.idea/okhttputils.iml" filepath="$PROJECT_DIR$/.idea/okhttputils.iml" />
+>>>>>>> 8eb36765306869b92f679e7c2159afd2998bc50d
     </modules>
   </component>
 </project>
