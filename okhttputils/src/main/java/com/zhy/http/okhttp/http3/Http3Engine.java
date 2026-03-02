@@ -54,10 +54,8 @@ public class Http3Engine {
                 suffixes.add(entry.host);
             } else {
                 exact.add(entry);
-                // port == -1 means "any port" → default HTTPS port 443
                 int p = entry.port == -1 ? 443 : entry.port;
                 engineBuilder.addQuicHint(entry.host, p, p);
-                Log.d(TAG, "已注册 QUIC hint：" + entry.host + ":" + p);
             }
         }
 
@@ -137,9 +135,8 @@ public class Http3Engine {
                     .setHttpMethod("HEAD")
                     .build();
             request.start();
-            Log.d(TAG, "预热请求 → " + url);
         } catch (Exception e) {
-            Log.w(TAG, "warmup start failed for " + url + ": " + e);
+            Log.w(TAG, "Http3Engine warmup failed for " + url, e);
         }
     }
 
@@ -154,9 +151,7 @@ public class Http3Engine {
 
         @Override
         public void onResponseStarted(UrlRequest request, UrlResponseInfo info) {
-            // We have the response headers – that's all we need for Alt-Svc caching.
-            Log.d(TAG, "预热响应 " + info.getHttpStatusCode()
-                    + " 协议=" + info.getNegotiatedProtocol() + " 来自 " + url);
+            // 收到响应头即可（触发 Alt-Svc 缓存），不需要读取 body
             request.cancel();
         }
 
@@ -166,19 +161,15 @@ public class Http3Engine {
         }
 
         @Override
-        public void onSucceeded(UrlRequest request, UrlResponseInfo info) {
-            Log.d(TAG, "预热成功 协议=" + info.getNegotiatedProtocol() + " 来自 " + url);
-        }
+        public void onSucceeded(UrlRequest request, UrlResponseInfo info) {}
 
         @Override
         public void onFailed(UrlRequest request, UrlResponseInfo info, CronetException error) {
-            Log.w(TAG, "预热失败 " + url + "：" + error.getMessage());
+            Log.w(TAG, "Http3Engine warmup failed for " + url + ": " + error.getMessage());
         }
 
         @Override
-        public void onCanceled(UrlRequest request, UrlResponseInfo info) {
-            // expected – we cancel after receiving headers
-        }
+        public void onCanceled(UrlRequest request, UrlResponseInfo info) {}
     }
 
     private static boolean matches(String rule, String host) {

@@ -397,6 +397,16 @@ public class MainActivity extends AppCompatActivity
         runPostTest();
     }
 
+    /** 测试 /api/jskc（分页查询） */
+    public void postJskcTest(View view) {
+        runPostJskcTest();
+    }
+
+    /** 测试 /Fender/BarCode（条码查询） */
+    public void postBarCodeTest(View view) {
+        runPostBarCodeTest();
+    }
+
     /**
      * 将结果写入 UI，自动在前面加上当前协议（如果能够获取）。
      */
@@ -437,7 +447,55 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void runPostTest() {
-        String url = "https://caraya.g127.com:9008/api/Jskc";
+        // 保留原有测试入口，复用 Jskc 逻辑
+        runPostJskcTest();
+    }
+
+    /**
+     * POST https://caraya.g127.com:9008/api/jskc
+     * 以 JSON body 发送分页参数（.NET Web API 标准做法）。
+     */
+    private void runPostJskcTest() {
+        final String url = "https://caraya.g127.com:9008/api/jskc";
+
+        showResult("[Jskc] 正在请求...");
+
+        OkHttpUtils.post()
+                .url(url)
+                .addParams("page", "2")
+                .addParams("limit", "3")
+                .build()
+                .execute(new com.zhy.http.okhttp.callback.Callback<String>() {
+                    @Override
+                    public String parseNetworkResponse(okhttp3.Response response, int id) throws Exception {
+                        String body = response.body() != null ? response.body().string() : "(empty body)";
+                        Log.d(TAG, "[Jskc] HTTP " + response.code() + " proto=" + response.protocol());
+                        Log.d(TAG, "[Jskc] body=" + body);
+                        setResultWithProtocol("[Jskc] HTTP " + response.code(), response, body);
+                        return body;
+                    }
+
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Log.e(TAG, "[Jskc] POST failed", e);
+                        showResult("[Jskc] 错误: " + e.getMessage());
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) { /* handled above */ }
+                });
+    }
+
+    /**
+     * POST https://caraya.g127.com:9008/Fender/BarCode
+     */
+    private void runPostBarCodeTest() {
+        final String url = "https://caraya.g127.com:9008/Fender/BarCode";
+        // 测试条码，根据实际接口文档修改字段名/值
+        final String json = "{\"barCode\":\"TEST001\",\"page\":1,\"limit\":10}";
+
+        showResult("[BarCode] 正在请求...");
+        Log.d(TAG, "POST " + url + " body=" + json);
 
         OkHttpUtils.post()
                 .url(url)
@@ -447,24 +505,29 @@ public class MainActivity extends AppCompatActivity
                 .execute(new com.zhy.http.okhttp.callback.Callback<String>() {
                     @Override
                     public String parseNetworkResponse(okhttp3.Response response, int id) throws Exception {
-                        String body = response.body() != null ? response.body().string() : "";
-                        setResultWithProtocol("POST 成功", response, body);
+                        String body = response.body() != null ? response.body().string() : "(empty body)";
+                        Log.d(TAG, "[BarCode] HTTP " + response.code() + " proto=" + response.protocol());
+                        Log.d(TAG, "[BarCode] body=" + body);
+                        setResultWithProtocol("[BarCode] HTTP " + response.code(), response, body);
                         return body;
                     }
 
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        Log.e(TAG, "POST test failed", e);
-                        String msg = "POST 错误: " + e.getMessage();
-                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-                        if (http3Result != null) http3Result.setText(msg);
+                        Log.e(TAG, "[BarCode] POST failed", e);
+                        showResult("[BarCode] 错误: " + e.getMessage());
                     }
 
                     @Override
-                    public void onResponse(String response, int id) {
-                        // already handled
-                    }
+                    public void onResponse(String response, int id) { /* handled above */ }
                 });
+    }
+
+    /** 线程安全地将文字写入结果 TextView。 */
+    private void showResult(String text) {
+        if (http3Result != null) {
+            runOnUiThread(() -> http3Result.setText(text));
+        }
     }
 
     private void runHttp3Test() {

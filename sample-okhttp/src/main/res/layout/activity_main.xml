@@ -94,6 +94,14 @@
                 android:onClick="postTest"
                 android:text="POST Test"/>
 
+        <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:onClick="postJskcTest"
+                android:text="POST /api/jskc"/>
+
+        <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:onClick="postBarCodeTest"
+                android:text="POST /Fender/BarCode"/>
+
     </com.zhy.sample_okhttp.FlowLayout>
 
     <ProgressBar

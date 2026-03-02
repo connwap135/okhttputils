@@ -50,6 +50,8 @@ public class CronetInterceptor implements Interceptor {
             saveCookies(cronetRequest, response);
             return response;
         } catch (Exception e) {
+            Log.e(TAG, "Cronet failed, falling back to OkHttp: "
+                    + request.method() + " " + request.url(), e);
             return chain.proceed(request);
         }
     }
@@ -71,9 +73,5 @@ public class CronetInterceptor implements Interceptor {
         if (cookieJar == null || response == null) return;
         List<Cookie> cookies = Cookie.parseAll(request.url(), response.headers());
         if (!cookies.isEmpty()) cookieJar.saveFromResponse(request.url(), cookies);
-    }
-
-    private static void safeLog(String tag, String msg) {
-        try { Log.d(tag, msg); } catch (Throwable ignored) {}
     }
 }
