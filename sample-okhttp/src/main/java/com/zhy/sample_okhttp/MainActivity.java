@@ -499,8 +499,8 @@ public class MainActivity extends AppCompatActivity
 
         OkHttpUtils.post()
                 .url(url)
-                .addParams("page", "1")
-                .addParams("limit", "10")
+                .addParams("PageIndex", "1")
+                .addParams("PageSize", "10")
                 .build()
                 .execute(new com.zhy.http.okhttp.callback.Callback<String>() {
                     @Override
