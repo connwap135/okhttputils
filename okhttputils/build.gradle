@@ -4,11 +4,17 @@ plugins {
 }
 
 group = 'com.github.connwap135'
-version = '2.6.11'
+version = '2.6.13'
 
 android {
     namespace 'com.zhy.http'
     compileSdkVersion 36
+
+    compileOptions {
+        // Use Java 17 for source and target compatibility — Gradle 9+ and AGP 7.0+ support this
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
 
     defaultConfig {
         minSdk 21
@@ -36,7 +42,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.github.connwap135'
                 artifactId = 'okhttputils'
-                version = '2.6.10'
+                version = '2.6.13'
             }
         }
     }
