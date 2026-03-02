@@ -82,6 +82,18 @@
                 android:onClick="clearSession"
                 android:text="clearSession"/>
 
+        <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:onClick="http3Test"
+                android:text="HTTP3 Test"/>
+
+        <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:onClick="getTest"
+                android:text="GET Test"/>
+
+        <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:onClick="postTest"
+                android:text="POST Test"/>
+
     </com.zhy.sample_okhttp.FlowLayout>
 
     <ProgressBar
@@ -100,6 +112,13 @@
         android:id="@+id/id_imageview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/http3_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="HTTP3 status"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
 
 
 </LinearLayout>

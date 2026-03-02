@@ -4,7 +4,91 @@
 
 对okhttp的封装类，okhttp见：[https://github.com/square/okhttp](https://github.com/square/okhttp).
 
-目前对应okhttp版本`3.3.1`.
+当前仓库示例对应okhttp版本`5.2.0`.
+
+## HTTP/3 (QUIC) 支持说明（Android）
+
+`OkHttp 5.2.0`在 Android 上不能仅通过配置 `Protocol.HTTP_3` 直接获得可用的 HTTP/3 传输。
+如果你需要在项目中启用 HTTP/3，推荐使用 Cronet 作为传输层桥接。
+
+### 依赖配置（Gradle）
+
+```gradle
+implementation 'com.squareup.okhttp3:okhttp:5.2.0'
+// 不要使用cronet-okhttp桥接库，它与OkHttp 5不兼容。
+// 本项目提供了自定义的CronetInterceptor/CronetCallBridge，
+// 直接依赖底层 Cronet 引擎即可：
+implementation 'org.chromium.net:cronet-embedded:143.7445.0'
+```
+
+### 客户端启用示例（推荐：由 okhttputils 库统一接管）
+
+在 `sample-okhttp` 应用中的主界面已添加一个 **HTTP3 Test** 按钮，点击即可发送示例请求并在 Logcat 中查看协商协议。
+
+
+```java
+OkHttpUtils.initClient(new OkHttpClient.Builder()
+        .connectTimeout(10, TimeUnit.SECONDS)
+        .readTimeout(10, TimeUnit.SECONDS)
+        .addInterceptor(new LoggerInterceptor("TAG"))
+    .addInterceptor(new CronetInterceptor(
+        Http3Engine.newBuilder(context).build(),
+        cookieJar
+    ))
+);
+
+// sample network call to verify HTTP/3 is illustrated in the sample app via
+// the HTTP3 Test button; see MainActivity for implementation.
+```
+
+```java
+// 白名单示例：支持任意端口、指定端口和通配符
+Http3Engine cronetEngine = Http3Engine.newBuilder(context)
+    .addHost("api.example.com")          // 443 或默认端口
+    .addHost("api.example.com", 8443)    // 仅针对 8443
+    .addHost("*.example.org")            // 通配域名，任意端口
+    .build();
+
+OkHttpUtils.initClient(new OkHttpClient.Builder()
+        .connectTimeout(10, TimeUnit.SECONDS)
+        .readTimeout(10, TimeUnit.SECONDS)
+        .addInterceptor(new LoggerInterceptor("TAG"))
+        .addInterceptor(new CronetInterceptor(cronetEngine, cookieJar))
+);
+```
+
+策略说明：
+
+- `Http3Engine` 将包含在构造器中的主机作为“候选”。每个精确条目可指定端口，通配符
+  条目仅匹配主机名，不区分端口。
+- 构建时向 Cronet 注册 QUIC hint（主机+端口），确保第一次请求就尝试使用 HTTP/3；
+  还会自动发送 HEAD 预热请求刷新 Alt-Svc 缓存。
+- 非 HTTPS 或未命中规则的请求在拦截器中自动回退到普通 OkHttp。
+
+### 关于 `CronetInterceptor`
+
+- 它只是一个应用拦截器，判断 `Http3Engine.shouldUseCronet` 后决定是调用 Cronet 还是
+  回退到 `chain.proceed()`。
+- 日志采用中文格式，方便在 Logcat 观察流程（如“请求=… 是否走Cronet=true”）。
+- 如果其他应用拦截器需要在网络前执行，将 `CronetInterceptor` 放在最末。
+
+### 验证与测试
+
+为了确保库按实际 API 正常工作，我们还提供了 Android 端的 instrumentation 测试。它们运行在模拟/真机上，
+使用 `Http3Engine` 对域名匹配逻辑进行覆盖。命令如下：
+
+```bash
+./gradlew connectedAndroidTest -p okhttputils
+```
+
+测试结果可帮助你判断规则是否按预期执行，增强了库之于应用的可信度。
+
+### 生产环境注意事项
+
+- Cronet 路径会绕过 OkHttp 核心网络层的一部分能力（如缓存、重试、部分 network interceptor 行为）。
+- WebSocket 不走 Cronet 传输桥接。
+- 建议保留回退到普通 OkHttp 的策略，并在灰度环境验证协议命中、失败回退与证书配置行为。
+- 注意不要动态改变 `Http3Engine` 规则——构建完成后规则不可变，需重新创建引擎。
 
 ## 用法
 

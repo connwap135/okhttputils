@@ -29,15 +29,19 @@ import okhttp3.Call;
 import okhttp3.CookieJar;
 import okhttp3.MediaType;
 import okhttp3.Request;
+import java.io.IOException;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity
 {
 
-    private final String mBaseUrl = "http://192.168.31.242:8888/okHttpServer/";
+    // 任意可访问的后台 API，原 192.168.31.242 已经不可用，这里作为演示可以换成自己的服务
+    private final String mBaseUrl = "http://example.com/"; // placeholder, not used by HTTP3 tests
 
     private static final String TAG = "MainActivity";
 
     private TextView mTv;
+    private TextView http3Result;
     private ImageView mImageView;
     private ProgressBar mProgressBar;
 
@@ -102,6 +106,13 @@ public class MainActivity extends AppCompatActivity
         mImageView = findViewById(R.id.id_imageview);
         mProgressBar = findViewById(R.id.id_progress);
         mProgressBar.setMax(100);
+        // http3 result view
+        // http3 result view
+        TextView http3Result = findViewById(R.id.http3_result);
+        this.http3Result = http3Result;
+
+        // 如果需要，可以在启动时立即执行一次 HTTP/3 测试
+        // runHttp3Test();
     }
 
     public void getHtml(View view)
@@ -372,6 +383,130 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    public void http3Test(View view) {
+        runHttp3Test();
+    }
+
+    // 额外测试：使用 httpbin.org 的 GET 接口，可以观察是否走 Cronet (HTTP/3)
+    public void getTest(View view) {
+        runGetTest();
+    }
+
+    // 额外测试：使用 httpbin.org 的 POST 接口
+    public void postTest(View view) {
+        runPostTest();
+    }
+
+    /**
+     * 将结果写入 UI，自动在前面加上当前协议（如果能够获取）。
+     */
+    private void setResultWithProtocol(String prefix, okhttp3.Response resp, String body) {
+        String proto = resp != null ? resp.protocol().toString() : "?";
+        String text = prefix + " (协议=" + proto + ")\n" + body;
+        if (http3Result != null) {
+            runOnUiThread(() -> http3Result.setText(text));
+        }
+    }
+
+    private void runGetTest() {
+        String url = "https://caraya.g127.com:9008/api/Token/NoAuth";
+        OkHttpUtils.get()
+                .url(url)
+                .build()
+                .execute(new com.zhy.http.okhttp.callback.Callback<String>() {
+                    @Override
+                    public String parseNetworkResponse(okhttp3.Response response, int id) throws Exception {
+                        String body = response.body() != null ? response.body().string() : "";
+                        setResultWithProtocol("GET 成功", response, body);
+                        return body;
+                    }
+
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Log.e(TAG, "GET test failed", e);
+                        String msg = "GET 错误: " + e.getMessage();
+                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                        if (http3Result != null) http3Result.setText(msg);
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        // already handled in parseNetworkResponse
+                    }
+                });
+    }
+
+    private void runPostTest() {
+        String url = "https://caraya.g127.com:9008/api/Jskc";
+
+        OkHttpUtils.post()
+                .url(url)
+                .addParams("page", "1")
+                .addParams("limit", "10")
+                .build()
+                .execute(new com.zhy.http.okhttp.callback.Callback<String>() {
+                    @Override
+                    public String parseNetworkResponse(okhttp3.Response response, int id) throws Exception {
+                        String body = response.body() != null ? response.body().string() : "";
+                        setResultWithProtocol("POST 成功", response, body);
+                        return body;
+                    }
+
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Log.e(TAG, "POST test failed", e);
+                        String msg = "POST 错误: " + e.getMessage();
+                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                        if (http3Result != null) http3Result.setText(msg);
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        // already handled
+                    }
+                });
+    }
+
+    private void runHttp3Test() {
+        // 使用公用 HTTP/3 测试端点，允许任何人访问
+        // Cloudflare 提供的示例页面会通过 HTTP/3 返回 200
+        String testUrl = "https://cloudflare-quic.com/";
+
+        OkHttpUtils.get()
+                .url(testUrl)
+                .build()
+                .execute(new com.zhy.http.okhttp.callback.Callback<Void>() {
+                    @Override
+                    public Void parseNetworkResponse(okhttp3.Response response, int id) throws Exception {
+                        okhttp3.Protocol proto = response.protocol();
+                        String msg = "protocol=" + proto;
+                        if (proto == okhttp3.Protocol.HTTP_3) {
+                            msg += " (HTTP/3 negotiated)";
+                        } else {
+                            msg += " (fallback)";
+                        }
+                        Log.i("HTTP3Example", msg);
+                        if (http3Result != null) {
+                            final String finalMsg = msg;
+                            runOnUiThread(() -> http3Result.setText(finalMsg));
+                        }
+                        return null; // no body needed
+                    }
+
+                    @Override
+                    public void onError(okhttp3.Call call, Exception e, int id) {
+                        Log.e("HTTP3Example", "request failed", e);
+                        if (http3Result != null) {
+                            runOnUiThread(() -> http3Result.setText("error: " + e.getMessage()));
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(Void response, int id) {
+                        // nothing to do here; protocol handled earlier
+                    }
+                });
+    }
 
     @Override
     protected void onDestroy()
