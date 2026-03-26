@@ -80,8 +80,7 @@ public class PostFormRequest extends OkHttpRequest {
             for (String key : params.keySet()) {
                 String value = params.get(key);
                 assert value != null;
-                builder.addPart(Headers.of("Content-Disposition", "form-data; name=\"" + key + "\""),
-                        RequestBody.create(value, null));
+                builder.addFormDataPart(key, value);
             }
         }
     }
